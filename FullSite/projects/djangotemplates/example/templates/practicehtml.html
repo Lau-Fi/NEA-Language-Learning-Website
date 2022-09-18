@@ -1,4 +1,3 @@
-<!-- djangotemplates/example/templates/about.html-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +9,20 @@
 </head>
 
 <body>
-<p> "here are the questions" {{Question}}  </p>
+<p> "here are the questions"  </p>
 
+{% if Question %}
+    <ul>
+    {% for q in Question %}
+        <li>{{ q.Question }}</a></li>
+        <li>{{ q.Answer }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No questions are available.</p>
+{% endif %}
+
+ 
 </body>
 
 </html>
