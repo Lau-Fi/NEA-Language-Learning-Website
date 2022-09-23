@@ -20,3 +20,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# Look for tutorial to display one item and automatgically move onto the next one witout refreshing the page. 

@@ -7,6 +7,7 @@ def practicehtml(request):
     question = Question.objects.all()
     return render(request, 'practicehtml.html', {'Question': question}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
 
+
 # Add the two views we have been talking about  all this time :)
 class HomePageView(TemplateView):
     template_name = "index.html"
