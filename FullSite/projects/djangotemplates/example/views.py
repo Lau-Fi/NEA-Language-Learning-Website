@@ -4,8 +4,10 @@ from django.views.generic import TemplateView # Import TemplateView
 from .models import Question 
 
 def practicehtml(request):
-    question = Question.objects.all()
-    return render(request, 'practicehtml.html', {'Question': question}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
+    questions_html = []
+    for instance in Question.objects.all():  # it's not serialization, but extracting of the useful fields
+        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
+    return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
 
 
 # Add the two views we have been talking about  all this time :)

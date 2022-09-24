@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
+    {# practicehtml.html #}
     <head>
         <meta charset="UTF-8">
         <title>About Us</title>
@@ -11,7 +11,6 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css"> 
     </head>
 
     <body>
@@ -21,10 +20,12 @@
             crossorigin="anonymous"></script>
 
         <style>
-            body {
-                min-height: 100vh;
+            body{
+                padding: 0;
+                margin: 0;    
+                width:100vw;
+                height: 100vh;        
             }
-
             .navbar {
                 position: fixed;
                 width: 100%;
@@ -77,12 +78,6 @@
                 width: 100px;
                 height: 100px;
             }
-            body{
-                padding: 0;
-                margin: 0;    
-                width:100vw;
-                height: 100vh;        
-            }
             .panel{
                 height: 100vh;
                 display: flex;
@@ -93,7 +88,7 @@
             .question-container{
                 margin: 10px;
                 padding: 5px;
-                width: 80vw;
+                width: 32vw;
                 height: 10vh;
                 background-color: #c7dddf;
                 font-size: x-large;
@@ -114,8 +109,8 @@
                 justify-content: space-around; 
                 margin: 10px;
                 padding: 5px;
-                width: 80vw;
-                height: 20vh;
+                width: 32vw;
+                height: 10vh;
                 background-color: #9eb1b3;   
                     
             }
@@ -131,7 +126,7 @@
                 background-color: lightgoldenrodyellow;
             }
             .navigation{
-                width: 80vw;
+                width: 32vw;
                 height: 10vh;
                 margin: 10px;
                 padding: 5px;
@@ -163,27 +158,7 @@
                 width: 25px;
                 height: 100px;
             }
-                body{
-                    padding: 0;
-                    margin: 0;    
-                    width:100vw;
-                    height: 100vh; 
-            }
-            #quizans{
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin-top: -50px;
-                margin-left: -50px;
-                width: 25px;
-                height: 100px;
-            }
-            body{
-                padding: 0;
-                margin: 0;    
-                width:100vw;
-                height: 100vh; 
-            }
+
         
         
         </style>
@@ -229,19 +204,6 @@
                 </div>
             </div>
         </nav>
-
-        <div id = "quiz">
-            <p> "here are the questions"  </p>
-            {% if Question %}
-                <ul>
-                    {% for q in Question %}
-                        <li>{{ q.Question }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No questions are available.</p>
-            {% endif %}
-        </div>
         
         <div class="panel", id = quizop>
             <div class="result">
@@ -251,56 +213,42 @@
                 Question goes here.
             </div>
             <div class="option-container">
-                <button class="option" onclick="" id="op1" >option1</button>
-          
-                <button class="option" id="op2" >option2</button>
-          
-                <button class="option" id="op3">option3</button>
-          
-                <button class="option" id="op4">option4</button>
+                <input type="text" id = "textinput">    
             </div>
             <div class="navigation">
                 <button class="evaluate">Evaluate</button>
                 <button class="next">Next</button>
             </div>
         </div>
-        <script src="script.js"></script>
-        <div id = "quizans">
-        <script> 
+        
+        <script>
+            var Questions = {{Questions|safe}};
+            
         // Questions will be asked
-const Questions = [{
+{% comment %} const Questions = [{
         id: 0,
         q: "What is capital of India?",
-        a: [{ text: "gandhinagar", isCorrect: false },
-            { text: "Surat", isCorrect: false },
-            { text: "Delhi", isCorrect: true },
-            { text: "mumbai", isCorrect: false }
-        ]
+        a: "Delhi"  
+        
   
     },
     {
         id: 1,
         q: "What is the capital of Thailand?",
-        a: [{ text: "Lampang", isCorrect: false, isSelected: false },
-            { text: "phuket", isCorrect: false },
-            { text: "Ayutthaya", isCorrect: false },
-            { text: "Bangkok", isCorrect: true }
-        ]
+        a: "Bangkok"
+        
   
     },
     {
         id: 2,
         q: "What is the capital of Gujarat",
-        a: [{ text: "surat", isCorrect: false },
-            { text: "vadodara", isCorrect: false },
-            { text: "gandhinagar", isCorrect: true },
-            { text: "rajkot", isCorrect: false }
-        ]
+        a: "gandhinagar"
+        
   
     }
   
 ]
-  
+   {% endcomment %}
 // Set start
 var start = true;
   
@@ -319,74 +267,23 @@ function iterate(id) {
     question.innerText = Questions[id].q;
   
     // Getting the options
-    const op1 = document.getElementById('op1');
-    const op2 = document.getElementById('op2');
-    const op3 = document.getElementById('op3');
-    const op4 = document.getElementById('op4');
+    const textinput = document.getElementById('textinput');
+   
   
   
-    // Providing option text 
-    op1.innerText = Questions[id].a[0].text;
-    op2.innerText = Questions[id].a[1].text;
-    op3.innerText = Questions[id].a[2].text;
-    op4.innerText = Questions[id].a[3].text;
-  
-    // Providing the true or false value to the options
-    op1.value = Questions[id].a[0].isCorrect;
-    op2.value = Questions[id].a[1].isCorrect;
-    op3.value = Questions[id].a[2].isCorrect;
-    op4.value = Questions[id].a[3].isCorrect;
-  
-    var selected = "";
-  
-    // Show selection for op1
-    op1.addEventListener("click", () => {
-        op1.style.backgroundColor = "lightgoldenrodyellow";
-        op2.style.backgroundColor = "lightskyblue";
-        op3.style.backgroundColor = "lightskyblue";
-        op4.style.backgroundColor = "lightskyblue";
-        selected = op1.value;
-    })
-  
-    // Show selection for op2
-    op2.addEventListener("click", () => {
-        op1.style.backgroundColor = "lightskyblue";
-        op2.style.backgroundColor = "lightgoldenrodyellow";
-        op3.style.backgroundColor = "lightskyblue";
-        op4.style.backgroundColor = "lightskyblue";
-        selected = op2.value;
-    })
-  
-    // Show selection for op3
-    op3.addEventListener("click", () => {
-        op1.style.backgroundColor = "lightskyblue";
-        op2.style.backgroundColor = "lightskyblue";
-        op3.style.backgroundColor = "lightgoldenrodyellow";
-        op4.style.backgroundColor = "lightskyblue";
-        selected = op3.value;
-    })
-  
-    // Show selection for op4
-    op4.addEventListener("click", () => {
-        op1.style.backgroundColor = "lightskyblue";
-        op2.style.backgroundColor = "lightskyblue";
-        op3.style.backgroundColor = "lightskyblue";
-        op4.style.backgroundColor = "lightgoldenrodyellow";
-        selected = op4.value;
-    })
-  
+    
     // Grabbing the evaluate button
     const evaluate = document.getElementsByClassName("evaluate");
   
     // Evaluate method
     evaluate[0].addEventListener("click", () => {
-        if (selected == "true") {
+        if (textinput.value.toLowerCase() == Questions[id].a.toLowerCase()) {
             result[0].innerHTML = "True";
             result[0].style.color = "green";
         } else {
             result[0].innerHTML = "False";
             result[0].style.color = "red";
-        }
+        } 
     })
 }
   
