@@ -205,7 +205,7 @@
             </div>
         </nav>
         
-        <div class="panel", id = quizop>
+        <div class="panel", id = "quizop">
             <div class="result">
       
             </div>
@@ -219,36 +219,13 @@
                 <button class="evaluate">Evaluate</button>
                 <button class="next">Next</button>
             </div>
+            <div id = "correctanswer">
+            </div>
         </div>
         
         <script>
             var Questions = {{Questions|safe}};
             
-        // Questions will be asked
-{% comment %} const Questions = [{
-        id: 0,
-        q: "What is capital of India?",
-        a: "Delhi"  
-        
-  
-    },
-    {
-        id: 1,
-        q: "What is the capital of Thailand?",
-        a: "Bangkok"
-        
-  
-    },
-    {
-        id: 2,
-        q: "What is the capital of Gujarat",
-        a: "gandhinagar"
-        
-  
-    }
-  
-]
-   {% endcomment %}
 // Set start
 var start = true;
   
@@ -258,6 +235,8 @@ function iterate(id) {
     // Getting the result display section
     var result = document.getElementsByClassName("result");
     result[0].innerText = "";
+    var correctanswer = document.getElementById("correctanswer");
+    correctanswer.innerText = ""
   
     // Getting the question
     const question = document.getElementById("question");
@@ -283,25 +262,27 @@ function iterate(id) {
         } else {
             result[0].innerHTML = "False";
             result[0].style.color = "red";
+            correctanswer.innerText = Questions[id].a;
         } 
     })
 }
   
 if (start) {
-    iterate("0");
+    iterate(Math.floor(Math.random() * Questions.length));
 }
   
 // Next button and method
 const next = document.getElementsByClassName('next')[0];
 var id = 0;
-  
+//add some randomness here  
 next.addEventListener("click", () => {
+    const textinput = document.getElementById('textinput');
+    textinput.value = ""
     start = false;
-    if (id < 2) {
-        id++;
-        iterate(id);
-        console.log(id);
-    }
+    id= Math.floor(Math.random() * Questions.length);
+    iterate(id);
+    console.log(id);
+    
   
 })
 
