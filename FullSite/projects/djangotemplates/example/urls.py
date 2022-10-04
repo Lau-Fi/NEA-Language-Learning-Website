@@ -13,6 +13,9 @@ urlpatterns = [
     re_path(r'^settings/$', views.SettingsPageView.as_view(), name = 'settings'),
     re_path(r'^practice_languages/$', views.Practice_languagesPageView.as_view(), name = 'practicelang'),
     re_path(r'^practicehtml/$', views.practicehtml, name = 'practicehtml'),
+    re_path(r'^quiz_languages/$', views.Quiz_languages.as_view(), name = 'quiz_languages'),
+    re_path(r'^quizhtml/$', views.quizhtml, name = 'quizhtml'),
+
 
 ]
 
