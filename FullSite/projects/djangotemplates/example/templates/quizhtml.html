@@ -164,6 +164,15 @@
             #results{
                 display:none;
             }
+            #score{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -50px;
+                margin-left: -51px;
+                width: 100px;
+                height: 100px;
+            }
 
         
         
@@ -233,9 +242,10 @@
         </div>
         <div id = "results">
             <p id = "score">
-            
             </p>
 
+        </div>
+        <div id = "scoredisplay">
         </div>
         <script>
             var Questions = {{Questions|safe}};
@@ -334,7 +344,7 @@ submit.addEventListener("click", () => {
         }
     }
     const scoredisplay = document.getElementById('score');
-    scoredisplay.innerHTML = score+ " outof "+ Answers.length; 
+    scoredisplay.innerHTML = score+ " out of "+ Answers.length; 
 
 })
 
@@ -342,6 +352,3 @@ submit.addEventListener("click", () => {
       </div>    
     </body>
 </html>
-
-
- 
