@@ -135,17 +135,17 @@
                 background-color:#c7dddf;
             }
                 
-            .back,.next{
+            .navbutton{
                 width:30vw;
                 height: 8vh;
                 padding: 5px;
                 font-size: larger;
             }
-            .back{
+            #back{
                 
                 background-color: #50DBB4;
             }
-            .next{
+            #next{
                 color: white;
                 background-color: #BF3325;
             }
@@ -157,6 +157,12 @@
                 margin-left: -51px;
                 width: 25px;
                 height: 100px;
+            }
+            #submit{
+                display:none; 
+            }
+            #results{
+                display:none;
             }
 
         
@@ -216,15 +222,21 @@
                 <input type="text" id = "textinput">    
             </div>
             <div class="navigation">
-                <button class="back">Back</button>
-                <button class="next">Next</button>
+                <button class = "navbutton", id="back">Back</button>
+                <button class = "navbutton", id="next">Next</button>
+                <button class = "navbutton", id="submit">Submit</button> 
             </div>
             <div id = "correctanswer">
             </div>
             <div id = "lives">
             </div>
         </div>
-        
+        <div id = "results">
+            <p id = "score">
+            
+            </p>
+
+        </div>
         <script>
             var Questions = {{Questions|safe}};
             var Answers = Array(Questions.length).fill("") 
@@ -275,8 +287,9 @@ if (start) {
 }
   
 // Next button and method
-const back = document.getElementsByClassName('back')[0];
-const next = document.getElementsByClassName('next')[0];
+const back = document.getElementById('back');
+const next = document.getElementById('next');
+const submit = document.getElementById('submit');
 var id = 0;
 //add some randomness here  
 next.addEventListener("click", () => {
@@ -289,7 +302,10 @@ next.addEventListener("click", () => {
         iterate(id);
         console.log(id);
     }
-   
+    else{
+        submit.style.display="block";
+        next.style.display="none";
+    }
 })
 
 
@@ -302,7 +318,24 @@ back.addEventListener("click", () => {
         start = false;
         iterate(id);
         console.log(id);
+        next.style.display="block";
+        submit.style.display="none";
     }
+})
+
+
+submit.addEventListener("click", () => {
+    quizop.style.display="none";
+    results.style.display="block";
+    let score = 0;
+    for (let i=0; i<Questions.length; i++){
+        if (Answers[i] == Questions[i].a){
+            score++;
+        }
+    }
+    const scoredisplay = document.getElementById('score');
+    scoredisplay.innerHTML = score+ " outof "+ Answers.length; 
+
 })
 
       </script>
