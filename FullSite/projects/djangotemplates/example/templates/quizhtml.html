@@ -173,6 +173,22 @@
                 width: 100px;
                 height: 100px;
             }
+            .wrongquestion{
+                position: relative;
+                left: 50%;
+                margin-left: -51px;
+                width: 1000px;
+                padding: 110px 500px 28px 250px;
+                color: red; 
+            }
+            .wronganswer{
+                position: relative;
+                left: 50%;
+                margin-left: -51px;
+                width: 1000px;
+                padding: 110px 500px 28px 250px;
+            }
+            
 
         
         
@@ -244,6 +260,8 @@
             <p id = "score">
             </p>
 
+        </div>
+        <div id = "wrongoutput">
         </div>
         <div id = "scoredisplay">
         </div>
@@ -338,14 +356,27 @@ submit.addEventListener("click", () => {
     quizop.style.display="none";
     results.style.display="block";
     let score = 0;
+    let wrongquestions = "";
     for (let i=0; i<Questions.length; i++){
         if (Answers[i] == Questions[i].a){
-            score++;
-        }
-    }
-    const scoredisplay = document.getElementById('score');
-    scoredisplay.innerHTML = score+ " out of "+ Answers.length; 
+            score++; 
+        } else if (Answers[i] !== Questions[i].a){
+                wrongquestions += "<div class = 'wrongquestion'>";
+                wrongquestions += Questions[i].q+' X';
+                wrongquestions += "</div>";
+                wrongquestions += "<div class = 'wronganswer'>";
+                wrongquestions += 'Correct Answer: '+Questions[i].a;
+                wrongquestions += "</div>";
+                
 
+                
+        } 
+        
+    }              
+    var wrongoutput = document.getElementById("wrongoutput");
+    wrongoutput.innerHTML = wrongquestions
+    const scoredisplay = document.getElementById('score');
+    scoredisplay.innerHTML = score+ " out of "+ Answers.length;
 })
 
       </script>
