@@ -11,33 +11,157 @@
 </head>
 <body>
     
-    <link href = "https://bootswatch.com/5/vapor/bootstrap.min.css"
-rel = "stylesheet" type ="text/css"> 
+    <link href = "https://bootswatch.com/5/vapor/bootstrap.min.css" rel = "stylesheet" type ="text/css"> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
-<style>
-    body {
-      background-repeat: no-repeat;
-    }
-    .navbar {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  div {  
-  width: 100px;   
-  border: 2px solid red;  
-}  
-div.class_name {  
-  word-wrap: normal;  
-}  
+    
+    
+  <style>
+      body {
+        background-repeat: no-repeat;
+      }
+      .navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    div {  
+    width: 100px;   
+    border: 2px solid red;  
+  }  
+  }
+  #chattext{
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -250px;
+    width: 500px;
+    height: 150px;
+    z-index: -1;
+  }
+  </style>
+  
+  <div id="wrapper">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid" z-index=999>
+        <a class="navbar-brand" href="{% url 'home' %}" cursorshover="true">Learna: Language Learning</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+          aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'home' %}" cursorshover="true">Home
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'play' %}" cursorshover="true">Play</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'chat' %}" cursorshover="true">Chat</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}" cursorshover="true">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false" cursorshover="true">Account</a>
+              <div class="dropdown-menu show" data-bs-popper="static">
+                <a class="dropdown-item" href="{% url 'profile' %}" cursorshover="true">My Profile</a>
+                <a class="dropdown-item" href="{% url 'settings' %}" cursorshover="true">Settings</a>
+                <a class="dropdown-item" href="{% url 'scores' %}" cursorshover="true">Scores</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" cursorshover="true">Log Out</a>
+              </div>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit" cursorshover="true">Search</button>
+          </form>
+        </div>
+      </div>
+   </div>  
+<div id = "chattext">
+  <div id="chat">
+  <div id="chat-messages">
+
+  <form id="chat-form" method="post">
+    <input type="text" name="message" placeholder="Enter a message..." maxlength="500" autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<script>
+var ws_uri = "ws://localhost:9600";
+var websocket = new WebSocket(ws_uri);
+  
+// on websocket open:
+websocket.onopen = function(event) {
+	MessageAdd('<div class="message green">You have entered the chat room.</div>');
+};
+
+// on websocket close:
+websocket.onclose = function(event) {
+	MessageAdd('<div class="message blue">You have been disconnected.</div>');
+};
+
+// on websocket error:
+websocket.onerror = function(event) {
+	MessageAdd('<div class="message red">Connection to chat failed.</div>');
+};
+
+websocket.onmessage = function(event) {
+	var data = JSON.parse(event.data);
+
+	if (data.type == "message") {
+		MessageAdd('<div class="message">' + data.username + ': ' + data.message + '</div>');
+ 	}
+};
+
+document.getElementById("chat-form").addEventListener("submit", function(event) {
+	event.preventDefault();
+
+	var message_element = document.getElementsByTagName("input")[0];
+	var message = message_element.value;
+
+	if (message.toString().length) {
+		var username = localStorage.getItem("username");
+
+		var data = {
+			type: "message",
+			username: username,
+			message: message
+		};
+
+		websocket.send(JSON.stringify(data));
+		message_element.value = "";
+	}
+}, false);
+
+function Username() {
+	var username = window.prompt("Enter your username:", "");
+
+	if (username.toString().length > 2) {
+		localStorage.setItem("username", username);
+	}
+	else {
+		alert("Your username must be at least two characters.");
+		Username();
+	}
 }
-    </style>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-  <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  </p>
-  <a href="{% url 'home' %}">Go Home</a>
+
+Username();
+
+function MessageAdd(message) {
+	var chat_messages = document.getElementById("chat-messages");
+
+	chat_messages.insertAdjacentHTML("beforeend", message);
+	chat_messages.scrollTop = chat_messages.scrollHeight;
+}
+
+</script>
 </body>
-</html>
