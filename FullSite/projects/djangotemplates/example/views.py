@@ -16,7 +16,12 @@ def quizhtml(request):
         questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
     return render(request, 'quizhtml.html', {'Questions': questions_html}) 
 
+def chat(request):
+    return render(request, "chat.html")
 
+
+def room(request, room_name):
+    return render(request, "chatrooms/room.html", {"room_name": room_name})
 
 # Add the two views we have been talking about  all this time :)
 class HomePageView(TemplateView):
@@ -51,4 +56,3 @@ class Quiz_html(TemplateView):
 
 
 
-                                                                                 
