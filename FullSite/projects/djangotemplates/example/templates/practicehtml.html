@@ -259,7 +259,9 @@ function iterate(id) {
         if (textinput.value.toLowerCase() == Questions[id].a.toLowerCase()) {
             result[0].innerHTML = "True";
             result[0].style.color = "green";
+            correctanswer.style.display = "none";
         } else {
+            correctanswer.style.display = "block";
             result[0].innerHTML = "False";
             result[0].style.color = "red";
             correctanswer.innerText = Questions[id].a;
