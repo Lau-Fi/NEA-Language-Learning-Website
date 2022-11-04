@@ -143,6 +143,10 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
+            if (data.message == null){
+              alert ("Please enter a message to chat")
+              return false;
+            }
         };
 
         chatSocket.onclose = function(e) {
@@ -159,12 +163,15 @@
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
+            if (messageInputDom.value != " ") {
+              chatSocket.send(JSON.stringify({
+                  'message': message
+            }))};
             messageInputDom.value = '';
-        };
+
+        }; //look back at the tutorial to fix null input problem 
     </script>
 
 
 </body>
+

@@ -1,7 +1,9 @@
 # djangotemplates/example/urls.py
 
-from django.urls import re_path, path
+from django.urls import re_path, path, include
 from example import views
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 
 
@@ -18,7 +20,9 @@ urlpatterns = [
     re_path(r'^quiz_languages/$', views.Quiz_languages.as_view(), name = 'quiz_languages'),
     re_path(r'^quizhtml/$', views.quizhtml, name = 'quizhtml'),
     path("chatrooms/<str:room_name>/", views.room, name="room"),
-
+    path('admin/', admin.site.urls),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('index/', views.HomePageView.as_view(), name = 'index'),
 ]
 
 # google regex 

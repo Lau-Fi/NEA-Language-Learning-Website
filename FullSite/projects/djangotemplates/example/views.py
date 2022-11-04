@@ -23,6 +23,8 @@ def chat(request):
 def room(request, room_name):
     return render(request, "chatrooms/room.html", {"room_name": room_name})
 
+def home(request):
+    return render (request, "index.html" ) 
 # Add the two views we have been talking about  all this time :)
 class HomePageView(TemplateView):
     template_name = "index.html"
