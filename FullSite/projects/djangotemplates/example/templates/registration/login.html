@@ -25,6 +25,74 @@
     z-index: 1;
     justify-content: center;
 }
+#loginbutton{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 95px;
+    margin-left: -50px;
+    width: 100px;
+    z-index: 1;
+    justify-content: center;
+}
+#registerbutton{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 480px;
+    margin-left: 126px;
+    width: 100px;
+    z-index: 1;
+    justify-content: center;
+}
+#registertext{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 415px;
+    margin-left: 148px;
+    width: 100px;
+    z-index: 1;
+    justify-content: center;
+    -webkit-animation: colorchange 20s infinite alternate;
+}
+
+@-webkit-keyframes colorchange{
+    0% {
+        color: blue;
+      }
+      10% {
+        color: #8e44ad;
+      }
+      20% {
+        color: #1abc9c;
+      }
+      30% {
+        color: #d35400;
+      }
+      40% {
+        color: blue;
+      }
+      50% {
+        color: #34495e;
+      }
+      60% {
+        color: blue;
+      }
+      70% {
+        color: #2980b9;
+      }
+      80% {
+        color: #f1c40f;
+      }
+      90% {
+        color: #2980b9;
+      }
+      100% {
+        color: pink;
+      }
+}
+
 
 </style>
 
@@ -49,7 +117,15 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
                 </div>
+                <div id = 'loginbutton'>
                 <button type="submit" class="btn btn-primary">LOGIN</button>
+                </div>
+                <div id = 'registerbutton'>
+                <button type = 'submit' class = "btn btn-primary">REGISTER</button>
+                </div>
+                <div id = 'registertext'>
+                <h5 style = "overflow: hidden" >New to Learna?</h5>
+                </div>    
                 <br />
                 <div class="form-group">
                     {% for message in messages %}
@@ -66,4 +142,5 @@
 
 </body>
 </html>
+
 
