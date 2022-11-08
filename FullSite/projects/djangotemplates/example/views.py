@@ -29,6 +29,9 @@ def home(request):
     return render (request, "index.html" ) 
 
 
+def registration(request):
+    return render (request, "registration.html" ) 
+
 def register(request):
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -59,7 +62,7 @@ def register(request):
             
 
     else:
-        return render(request, 'registeration.html')
+        return render(request, 'registration.html')
 
 
 
@@ -72,7 +75,7 @@ def login_user(request):
 
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+            return redirect('/index')
         else:
             messages.info(request, 'Invalid Username or Password')
             return redirect('login_user')
@@ -82,7 +85,7 @@ def login_user(request):
 
 # Add the two views we have been talking about  all this time :)
 class HomePageView(TemplateView):
-    template_name = "index.html"
+    template_name = "login.html"
 
 class ChatPageView(TemplateView):
     template_name = "chat.html"
@@ -111,5 +114,6 @@ class Quiz_languages(TemplateView):
 class Quiz_html(TemplateView):
     template_name = "quizhtml.html"
 
-
+class login(TemplateView):
+    template_name = "login.html"
 

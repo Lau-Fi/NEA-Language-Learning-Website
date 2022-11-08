@@ -119,13 +119,7 @@
                 </div>
                 <div id = 'loginbutton'>
                 <button type="submit" class="btn btn-primary">LOGIN</button>
-                </div>
-                <div id = 'registerbutton'>
-                <button type = 'submit' class = "btn btn-primary">REGISTER</button>
-                </div>
-                <div id = 'registertext'>
-                <h5 style = "overflow: hidden" >New to Learna?</h5>
-                </div>    
+                </div>   
                 <br />
                 <div class="form-group">
                     {% for message in messages %}
@@ -135,8 +129,12 @@
                     {% endfor %}
                 </div>
             </form>
-    
-    
+            <div id = 'registerbutton'>
+              <a href="{% url 'registration' %}" class = "btn btn-primary">REGISTER</a>
+            </div>
+            <div id = 'registertext'>
+              <h5 style = "overflow: hidden" >New to Learna?</h5>
+            </div> 
     </div>
 
 

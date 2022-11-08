@@ -21,8 +21,11 @@ urlpatterns = [
     re_path(r'^quizhtml/$', views.quizhtml, name = 'quizhtml'),
     path("chatrooms/<str:room_name>/", views.room, name="room"),
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('index/', views.HomePageView.as_view(), name = 'index'),
+    re_path(r"^registration/$", views.registration, name = "registration"),
+    re_path(r"^registration/register$", views.register, name = "register"),
+    path("login_user", views.login_user, name="login_user"),
+    #path("logout_user", views.logout_user, name="logout_user"),
+    path("index", views.home, name="home"),
 ]
 
 # google regex 
