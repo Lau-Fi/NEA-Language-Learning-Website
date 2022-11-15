@@ -192,6 +192,41 @@ body {
     padding: 0;
     border: 0;
 }
+#selectpic{
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -250px;
+  width: 500px;
+  height: 150px;
+  z-index: -1;
+}
+#imageUpload
+{
+    display: none;
+}
+
+#profileImage
+{
+    cursor: pointer;
+}
+
+#profile-container {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+}
+
+#profile-container img {
+    width: 150px;
+    height: 150px;
+}
 
   </style>
   
@@ -244,12 +279,13 @@ body {
     <h1>{{user.username}}</h1>
 </div>
 
-
-<button class="modal-open">Open modal box</button>
+<div id = "selectpic">
+<button class="modal-open">Choose your profile picture</button>
 <div class="modal-box">
     <div class="modal-box-content">
         <ul>
-            <li><a href="#">One</a></li>
+            {% load static %}
+            <li><img src="{% static 'user_profile_pics/wales.jpg' %}" alt="User Profile Picture 1 - Welsh Flag"></li>
             <li><a href="#">Two</a></li>
             <li><a href="#">Three</a></li>
             <li><a href="#">Four</a></li>
@@ -258,6 +294,8 @@ body {
     </div>
     <button class="modal-close"><span class="visuallyhidden">Close modal box</span></button>
 </div>
+</div>
+
 
 <script>
     $(document).ready(function() {
@@ -301,6 +339,7 @@ body {
         }); 
 
     })
+
 </script>
 
 </body>
