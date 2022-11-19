@@ -45,7 +45,7 @@
       z-index: 1;
     }
 
-    #Quiz_Button {
+    #Spanish_Button {
       position: absolute;
       top: 60%;
       left: 50%;
@@ -114,7 +114,11 @@
       href = "{% url 'practicehtml' %}"
       class = "btn btn-primary"
       role ="button">Japanese</a>
-      <button id="Quiz_Button" type="button" class="btn btn-primary" cursorhover="true">Spanish</button>
+      <a
+      id = "Spanish_Button" 
+      href = "{% url 'practice_spanish' %}"
+      class = "btn btn-primary"
+      role = "button">Spanish</a>
     <div id="instructions">
       <center>
         <p> Please select a learning mode to start questions. The quiz option will have limited retries while the

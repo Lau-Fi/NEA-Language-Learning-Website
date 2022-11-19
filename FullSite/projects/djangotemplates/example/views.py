@@ -15,11 +15,26 @@ def practicehtml(request):
     return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
 
 @login_required
+def practice_spanish(request):
+    questions_html = []
+    for instance in Question.objects.filter(id__gt = 51):  
+        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
+    return render(request, 'practice_spanish.html', {'Questions': questions_html}) 
+
+@login_required
 def quizhtml(request):
+    questions_html = []
+    for instance in random.sample(list(Question.objects.filter(id__gt = 51)), 10):
+        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
+    return render(request, 'quizhtml.html', {'Questions': questions_html}) 
+
+
+@login_required
+def quiz_spanish(request):
     questions_html = []
     for instance in random.sample(list(Question.objects.all()),10):
         questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
-    return render(request, 'quizhtml.html', {'Questions': questions_html}) 
+    return render(request, 'quiz_spanish.html', {'Questions': questions_html}) 
 
 @login_required
 def chat(request):
@@ -129,3 +144,5 @@ class Quiz_html(TemplateView):
 class login(TemplateView):
     template_name = "login.html"
 
+
+                                                                        
