@@ -101,6 +101,16 @@
   width: 100px;
   z-index: 1;
 }
+#inputalert{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: 95px;
+  margin-left: 50px;
+  width: 480px;
+  z-index: 1;
+  height: 10px;
+}
 
 </style>
 
@@ -129,7 +139,7 @@
                 <button type="submit" class="btn btn-primary">LOGIN</button>
                 </div>   
                 <br />
-                <div class="form-group">
+                <div class="form-group" id = "inputalert">
                     {% for message in messages %}
                     <div class="alert alert-danger" role="alert">
                         {{message}}

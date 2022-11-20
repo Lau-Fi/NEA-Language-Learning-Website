@@ -17,50 +17,16 @@
     
     
   <style>
-      body {
-        background-repeat: no-repeat;
-      }
-    .navbar {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-    }
-  #Userprofilename{
-    position: absolute;
-    top: 75%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -250px;
-    width: 500px;
-    height: 150px;
-    z-index: -1;
-  }
-
-@mixin absolute-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 body {
-    font-family: sans-serif;
-    background-color: #1d1f20;
+  background-repeat: no-repeat;
 }
-
-
-.visuallyhidden {
-    position: absolute;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
-#selectpic{
+#Userprofilename{
   position: absolute;
   top: 75%;
   left: 50%;
@@ -70,32 +36,59 @@ body {
   height: 150px;
   z-index: -1;
 }
-#imageUpload
-{
-    display: none;
+.container {
+  width: 50px;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-#profileImage
-{
-    cursor: pointer;
+.column {
+  float: left;
+  width: 5%;
+  padding: 10px;
 }
 
-#profile-container {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
+.column img {
+  margin-top: 12px;
+}
+img{
+width: 200px;
+padding: 15px;
+display: none;
+opacity: 1;
+display: block;
+height: 100px;
+transition: .5s ease;
+backface-visibility: hidden;
+}
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 44%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-#profile-container img {
-    width: 150px;
-    height: 150px;
+.container:hover .image {
+  opacity: 0.3;
 }
 
+.container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #04AA6D;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}   
   </style>
   
   <div id="wrapper">
@@ -151,63 +144,58 @@ body {
 <button class="modal-open">Choose your profile picture</button>
 <div class="modal-box">
     <div class="modal-box-content">
-        <ul>
-            {% load static %}
-            <li><img src="{% static 'user_profile_pics/wales.jpg' %}" alt="User Profile Picture 1 - Welsh Flag"></li>
-            <li><a href="#">Two</a></li>
-            <li><a href="#">Three</a></li>
-            <li><a href="#">Four</a></li>
-            <li><a href="#">Five</a></li>
-        </ul>
+      <div class="row">
+        <div class="container">
+        <div class="column">
+          {% load static %} 
+          <img src="{% static 'user_profile_pics/pfp_1.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_2.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_3.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_4.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_5.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_6.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_7.jpg' %}">
+        </div>
+        <div class="column">
+          <img src="{% static 'user_profile_pics/pfp_8.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_9.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_10.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_11.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_12.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_13.jpg' %}">
+        </div>
+        <div class="column">
+          <img src="{% static 'user_profile_pics/pfp_14.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_15.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_16.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_17.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_18.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_19.jpg' %}">
+          <img src="{% static 'user_profile_pics/pfp_20.jpg' %}">
+        </div>
+          <div class="middle">
+            <div class="text">Click to Select</div>
+          </div>
+      </div>
     </div>
-    <button class="modal-close"><span class="visuallyhidden">Close modal box</span></button>
+    </div>
+    <button id="pfp_list_open"><span class="visuallyhidden">Choose your Profile Picture</span></button>
 </div>
 </div>
 
 
 <script>
-    $(document).ready(function() {
-        var $trigger = $('.modal-open');
-        var $close = $('.modal-close');
-        var $modal = $('.modal-box');
-    
-        $(window).on('resize', function() {
-            var top = $trigger.offset().top + $trigger.outerHeight();
-            var left = $trigger.offset().left;
-            var width = $trigger.outerWidth();
-            $trigger.attr({
-                'data-top': top,
-                'data-left': left,
-                'data-width': width
-            });
-            $modal.css({
-                top: top,
-                left: left
-            });
-        }).trigger('resize');
-    
-        $trigger.on('click', function() {
-            $modal.css({
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%'
-            }).addClass('is-open');
-        });
-    
-        $close.on('click', function() {
-            var top = $trigger.offset().top + $trigger.outerHeight();
-            var left = $trigger.offset().left;
-            $modal.css({
-                top: top,
-                left: left,
-                width: 0,
-                height: '2px'
-            }).removeClass('is-open');
-        }); 
+ $(document).ready(
+  function(){
+    $("#pfp_list_open").click(toggle);
+  }
+);
 
-    })
+function toggle() {
+  $("img").toggle();
+}
 
+toggle();
 </script>
 
 </body>

@@ -20,17 +20,13 @@
       body {
         background-repeat: no-repeat;
       }
-      .navbar {
+  .navbar {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    div {  
-    width: 100px;   
-    border: 2px solid red;  
-  }  
   }
-  #chattext{
+  #chatroombuttons{
     position: absolute;
     top: 75%;
     left: 50%;
@@ -85,25 +81,28 @@
         </div>
       </div>
    </div>  
-<div id = "chattext">
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
-</div>
-
+   <div id = "chatroombuttons">
+      <a class = "button" id = "Jpnbutton" href = "#" >Japanese ChatRoom </a>
+      <a class = "button" id = "Spnbutton" href = "#" > Spanish ChatRoom </a>  
+   </div>
 <script>
-    document.querySelector('#room-name-input').focus();
-    document.querySelector('#room-name-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#room-name-submit').click();
-        }
-    };
+    //document.querySelector('#room-name-input').focus();
+    //document.querySelector('#room-name-input').onkeyup = function(e) {
+        //if (e.keyCode === 13) {  // enter, return
+            //document.querySelector('#room-name-submit').click();
+        //}
+    //};
 
-    document.querySelector('#room-name-submit').onclick = function(e) {
-        var roomName = document.querySelector('#room-name-input').value;
-        window.location.pathname = '/chatrooms/' + roomName + '/';
-    };
-
+    //document.querySelector('#room-name-submit').onclick = function(e) {
+        //var roomName = document.querySelector('#room-name-input').value;
+        //window.location.pathname = '/chatrooms/' + roomName + '/';
+    //};
+    document.querySelector('#Jpnbutton').onclick = function(e) {
+      window.location.pathname = '/chatrooms/JapanChatroom/';
+    }
+    document.querySelector('#Spnbutton').onclick = function(e) {
+      window.location.pathname = '/chatrooms/SpanishChatroom/';
+    }
 
 </script>
 </body>
