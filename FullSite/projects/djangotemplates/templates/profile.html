@@ -20,16 +20,12 @@
       body {
         background-repeat: no-repeat;
       }
-      .navbar {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    div {  
-    width: 100px;   
-    border: 2px solid red;  
-  }  
-  }
+    .navbar {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
   #Userprofilename{
     position: absolute;
     top: 75%;
@@ -40,8 +36,6 @@
     height: 150px;
     z-index: -1;
   }
-  $ease: cubic-bezier(0.165, 0.84, 0.44, 1);
-$highlight-color: #505050;
 
 @mixin absolute-center {
     position: absolute;
@@ -55,132 +49,6 @@ body {
     background-color: #1d1f20;
 }
 
-.modal-open {
-    padding: 10px 0;
-    font-weight: 300;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #fff;
-    border: 0;
-    outline: none;
-    background-color: transparent;
-    @include absolute-center;
-    &:before,
-    &:after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 0;
-        height: 2px;
-        transition: width 400ms $ease;
-    }
-    &:before {
-        width: 100%;
-        background-color: lighten($highlight-color, 30%);
-    }
-    &:after {
-        width: 0;
-        background-color: $highlight-color;
-    }
-    &:hover:after {
-        width: calc(100% + 1px);
-    }
-}
-
-.modal-box {
-    position: absolute;
-    overflow: hidden;
-    width: 0;
-    height: 2px;
-    color: #fff;
-    background-color: $highlight-color;
-    transition: width 400ms 400ms $ease, left 400ms 400ms $ease, height 400ms 0ms $ease, top 400ms 0ms $ease;
-    &.is-open {
-        transition: width 400ms 0ms $ease, left 400ms 0ms $ease, height 400ms 400ms $ease, top 400ms 400ms $ease;
-        li {
-            opacity: 1;
-        }
-        .modal-close {
-            opacity: 1;
-            transition: all 500ms 700ms;
-        }
-    }
-    ul {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: 0;
-        padding: 30px;
-        list-style-type: none;
-        transform: translate(-50%, -50%);
-    }
-    li {
-        position: relative;
-        margin: 20px 0;
-        text-align: center;
-        opacity: 0;
-        transition: all 200ms;
-    }
-    a {
-        position: relative;
-        font-weight: 300;
-        text-decoration: none;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #fff;
-        &:before,
-        &:after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 0;
-            height: 2px;
-            transition: width 400ms $ease;
-        }
-        &:after {
-            width: 0;
-            background-color: #fff;
-        }
-        &:hover:after {
-            width: 100%;
-        }
-    }
-    @for $i from 1 through 5 {
-        &.is-open li:nth-child(#{$i}) {
-            transition: all 500ms 500ms + (75ms * $i);
-        }
-    }
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 15px;
-    height: 15px;
-    padding: 0;
-    border: 0;
-    outline: none;
-    opacity: 0;
-    background-color: transparent;
-    transform: rotate(-45deg);
-    &:before,
-    &:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 15px;
-        height: 3px;
-        background-color: #fff;
-        transform: translate(-50%, -50%);
-    }
-    &:after {
-        width: 3px;
-        height: 15px;
-    }
-}
 
 .visuallyhidden {
     position: absolute;
