@@ -148,7 +148,7 @@ backface-visibility: hidden;
         <div class="container">
         <div class="column">
           {% load static %} 
-          <img src="{% static 'user_profile_pics/pfp_1.jpg' %}">
+          <button type = "button"> <img src="{% static 'user_profile_pics/pfp_1.jpg' %}" /></button>
           <img src="{% static 'user_profile_pics/pfp_2.jpg' %}">
           <img src="{% static 'user_profile_pics/pfp_3.jpg' %}">
           <img src="{% static 'user_profile_pics/pfp_4.jpg' %}">
@@ -181,6 +181,10 @@ backface-visibility: hidden;
     </div>
     <button id="pfp_list_open"><span class="visuallyhidden">Choose your Profile Picture</span></button>
 </div>
+{% if user.is_authenticated %}
+        <a class="text" >Your Description is: , {{bio}}</a>
+{% endif %}
+
 </div>
 
 
@@ -196,6 +200,17 @@ function toggle() {
 }
 
 toggle();
+
+  $(document).ready(
+    function(){
+      img.onclick 
+    }
+  )
+
+//         What we want here is when the image is clicked it stores the image in a variable to use as the user pfp (the variable exists in the models.py). 
+//         We then create a box for the selected and stored image to be displayed on the profile page.
+//         How to do this? I am not sure.
+
 </script>
 
 </body>

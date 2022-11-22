@@ -2,7 +2,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView # Import TemplateView
-from .models import Question
+from .models import Question, Profile
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.decorators import login_required
 import random 
@@ -10,7 +10,7 @@ import random
 @login_required
 def practicehtml(request):
     questions_html = []
-    for instance in Question.objects.all():  # it's not serialization, but extracting of the useful fields
+    for instance in Question.objects.filter(id__lte = 51):  # it's not serialization, but extracting of the useful fields
         questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
     return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
 
@@ -24,7 +24,7 @@ def practice_spanish(request):
 @login_required
 def quizhtml(request):
     questions_html = []
-    for instance in random.sample(list(Question.objects.filter(id__gt = 51)), 10):
+    for instance in random.sample(list(Question.objects.filter(id__lte = 51)), 10):
         questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
     return render(request, 'quizhtml.html', {'Questions': questions_html}) 
 
@@ -32,7 +32,7 @@ def quizhtml(request):
 @login_required
 def quiz_spanish(request):
     questions_html = []
-    for instance in random.sample(list(Question.objects.all()),10):
+    for instance in random.sample(list(Question.objects.filter(id__gt = 51)),10):
         questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
     return render(request, 'quiz_spanish.html', {'Questions': questions_html}) 
 
@@ -52,6 +52,11 @@ def home(request):
 def registration(request):
     return render (request, "registration.html" ) 
 
+@login_required
+def profile(request):
+    profile = Profile.objects.get(user = request.user)
+    return render (request, "profile.html", {'bio': profile.bio} ) 
+    
 
 def register(request):
     if request.method == 'POST':
@@ -61,7 +66,8 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-
+        bio = request.POST['bio']
+        
         if password==confirm_password:
             if User.objects.filter(username=username).exists():
                 messages.info(request, 'Username is already taken')
@@ -70,9 +76,11 @@ def register(request):
                 messages.info(request, 'Email is already taken')
                 return redirect(register)
             else:
-                user = User.objects.create_user(username=username, password=password, 
-                                        email=email, first_name=first_name, last_name=last_name)
+                user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
                 user.save()
+                
+                profile = Profile(bio=bio, user=user)
+                profile.save()
                 
                 return redirect('login_user')
 

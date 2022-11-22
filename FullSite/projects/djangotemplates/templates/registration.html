@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
+<style>
+    #pic1{
+        width: 100px;
+        height: 80px;
+        border: none;
+    }
+    #pic2{
+        width: 100px;
+        height: 80px;
+        border: none;
+    }
+    /* Dropdown Button */
+    .dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    }
 
+    /* Dropdown button on hover & focus */
+    .dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+    .show {display:block;}
+
+</style> 
 
 
 <body>
@@ -54,6 +111,24 @@
             <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                 placeholder="Confirm Your Password" Required>
         </div>
+        <div class="form-group">
+            <label for="bio">Enter your profile description</label>
+            <input type="text" class="form-control" name="bio" id="bio" placeholder="Type here"
+                Required>
+        </div>
+        <div class="dropdown">
+            <button onclick="dropdownboxfunc()" class="dropbtn">Choose your profile picture</button>
+            <div id = "myDropdown" class = "dropdown-content">
+            <input type="list" class="form-control" name="bio" id="bio" Required>
+                <ul> 
+                    <li>
+                        <input id = "pic1" type = "image" src = "{% static 'user_profile_pics/pfp_1.jpg' %}">
+                    </li>
+                    <li>
+                    <input id = "pic2" type = "image" src = "{% static 'user_profile_pics/pfp_2.jpg' %}">
+                    </li>
+                </ul>
+        </div>
         <button type="submit" class="btn btn-primary">SIGNUP</button>
         <a class="btn btn-dark" href="{% url 'login_user' %}" role="button">LOGIN</a>
     </div>
@@ -65,6 +140,33 @@
     </div>
     {% endfor %}
 </div>
+
+
+<script>
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function dropdownboxfunc() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  
+  // Close the dropdown menu if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+</script>
+
+
 </body>
 
 </html>
