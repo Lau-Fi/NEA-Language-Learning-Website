@@ -70,6 +70,18 @@
     /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
     .show {display:block;}
 
+    label {
+        cursor: pointer;
+        filter: grayscale(100%);
+      }
+      
+      label:hover {
+        filter: grayscale(0);
+      }
+      input[type="radio"]:checked + label {
+        filter: grayscale(0);
+      }
+
 </style> 
 
 
@@ -116,18 +128,20 @@
             <input type="text" class="form-control" name="bio" id="bio" placeholder="Type here"
                 Required>
         </div>
-        <div class="dropdown">
-            <button onclick="dropdownboxfunc()" class="dropbtn">Choose your profile picture</button>
-            <div id = "myDropdown" class = "dropdown-content">
-            <input type="list" class="form-control" name="bio" id="bio" Required>
-                <ul> 
-                    <li>
-                        <input id = "pic1" type = "image" src = "{% static 'user_profile_pics/pfp_1.jpg' %}">
-                    </li>
-                    <li>
-                    <input id = "pic2" type = "image" src = "{% static 'user_profile_pics/pfp_2.jpg' %}">
-                    </li>
-                </ul>
+        <div id = "selectimage">
+            <fieldset>
+                <legend>
+                    Choose your profile picture
+                </legend>
+                <label for = "user_profile_pics/pfp_1.jpg"> 
+                    <input type = "radio" name = "picture" class = "sr-only" value ="user_profile_pics/pfp_1.jpg"  Required>
+                    <img src = "{% static 'user_profile_pics/pfp_1.jpg' %}" alt = "pic1" style="width:150px;height:100px;"  Required>
+                </label>
+                <label for="user_profile_pics/pfp_2.jpg">
+                    <input type="radio" name="picture" class="sr-only" value="user_profile_pics/pfp_2.jpg" >
+                    <img src="{% static 'user_profile_pics/pfp_2.jpg' %}" alt="pic2" style="width:150px;height:100px;">
+                </label>
+            </fieldset>
         </div>
         <button type="submit" class="btn btn-primary">SIGNUP</button>
         <a class="btn btn-dark" href="{% url 'login_user' %}" role="button">LOGIN</a>
@@ -163,6 +177,8 @@ function dropdownboxfunc() {
       }
     }
   }
+  
+
 
 </script>
 
@@ -170,3 +186,4 @@ function dropdownboxfunc() {
 </body>
 
 </html>
+

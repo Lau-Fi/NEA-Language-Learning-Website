@@ -30,6 +30,7 @@ urlpatterns = [
     path("login_user", views.login_user, name="login_user"),
     path("index", views.home, name="home"),
     path("logout_user", views.logout_user, name="logout_user"),
+    re_path(r"^profile/update_user$", views.update_user, name = "update_user"),
 
 ]
 

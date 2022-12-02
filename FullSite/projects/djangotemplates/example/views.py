@@ -55,8 +55,7 @@ def registration(request):
 @login_required
 def profile(request):
     profile = Profile.objects.get(user = request.user)
-    return render (request, "profile.html", {'bio': profile.bio} ) 
-    
+    return render (request, "profile.html", {"userinfo": {'bio': profile.bio, 'picture': profile.picture}}) 
 
 def register(request):
     if request.method == 'POST':
@@ -67,6 +66,7 @@ def register(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         bio = request.POST['bio']
+        picture = request.POST['picture']
         
         if password==confirm_password:
             if User.objects.filter(username=username).exists():
@@ -79,7 +79,7 @@ def register(request):
                 user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
                 user.save()
                 
-                profile = Profile(bio=bio, user=user)
+                profile = Profile(bio=bio, picture=picture, user=user)
                 profile.save()
                 
                 return redirect('login_user')
@@ -113,6 +113,43 @@ def login_user(request):
     else:
         return render(request, 'login.html')
 
+
+def update_user(request):
+    if request.method == 'POST':
+        profile = Profile.objects.get(user = request.user)
+        user = request.user
+        first_name = request.POST.get('first_name',None)
+        last_name = request.POST.get('last_name',None) 
+        username = request.POST.get('username',None)
+        email = request.POST.get('email',None) 
+        password = request.POST.get('password',None)
+        confirm_password = request.POST.get('confirm_password',None) 
+        bio = request.POST.get('bio',None) 
+        picture = request.POST.get('picture',None)
+        
+        if bio is not None:
+            profile.bio = bio 
+        if picture is not None:
+            profile.picture = picture
+        if first_name is not None:
+            user.first_name = first_name
+        if last_name is not None:
+            user.last_name = last_name 
+        if username is not None:
+            user.username = username
+        if email is not None:
+            user.email = email
+        if password is not None:
+            user.password = password 
+        if confirm_password is not None:
+            user.confirm_password = confirm_password
+        
+        user.save()
+        profile.save()
+        return redirect('profile.html')
+    else:
+        return redirect('index')
+       
 
 def logout_user(request):
     auth.logout(request)
