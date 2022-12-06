@@ -133,7 +133,7 @@ def update_user(request):
         if picture is not None:
             userprofile.picture = picture
         if first_name is not None:
-            if first_name and first_name.strip():
+            if first_name.strip():
                 user.first_name = first_name
             else:
                 messages.info(request, 'Please enter a First Name')
@@ -166,9 +166,7 @@ def update_user(request):
                 else:
                     messages.info(request, 'Passwords do not match')
                     return redirect(update_user)
-            else:
-                messages.info(request, 'Please enter your passwords')
-                return redirect(update_user)
+
 
         user.save()
         userprofile.save()
@@ -217,15 +215,6 @@ class login(TemplateView):
     template_name = "login.html"
 
 
-# We need to make sure updated passwords and encrypted and add validation
-# to the update page so if a username is the same as one already in the 
-# database it will not allow it. Futhermore, we may need to change the 
-# update form as there are many errors.
-# You can set nothing as your password. 
-# Account dropsdown on every page
-# Picture disappears when updating         
-# Logging me out when updating user profile? 
+
 # Required redirect - the redirect is the wrong URL 
-# disallow blank passwords or preferably passwords less than 8 characters 
-# Need to change from is none checks 
-# Need to find out that blank entries in the profile count as none (does not turn up) or blank strings = IT IS A BLANK STRING                               
+# force passwords to be more than 8 characters 
