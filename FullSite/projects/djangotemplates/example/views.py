@@ -146,9 +146,6 @@ def update_user(request):
                 return redirect(update_user) 
         if username is not None:
             if username and username.strip():
-                if User.objects.filter(username=username).exists():
-                    messages.info(request, 'Username is already taken')
-                    return redirect(update_user)
                 user.username = username
             else:
                 messages.info(request, 'Please enter a Username')
@@ -216,5 +213,7 @@ class login(TemplateView):
 
 
 
-# Required redirect - the redirect is the wrong URL 
+# Required redirect - the redirect is the wrong URL ? 
 # force passwords to be more than 8 characters 
+
+#WE MAY HAVE AN ERROR IN UPDATING THE USER IF THEY PICK THE SAME USERNAME OR EMAIL AS ANOTHER USER (and maybe password?)

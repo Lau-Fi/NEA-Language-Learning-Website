@@ -8,18 +8,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL), #The next migratiom
         ('example', '0001_initial'),
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Profile',
+        migrations.CreateModel( #This model is for the user profile (Not the account however.) 
+            name='Profile', # id, bio, picture and user are the fields. 
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('bio', models.TextField(blank=True, max_length=500)),
                 ('picture', models.TextField(max_length=500)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)), #The user is part of the profile model - user is other objects such as username
             ],
         ),
     ]

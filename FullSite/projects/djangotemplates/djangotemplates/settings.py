@@ -12,28 +12,30 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path, os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Build paths inside the project like this: BASE_DIR / 'subdir'.                                                                                                                                                
+BASE_DIR = Path(__file__).resolve().parent.parent # The base directory equals the path + file and any parents of it
 
-LOGIN_REDIRECT_URL = '/index'
+LOGIN_REDIRECT_URL = '/index' #When logged in the user will be redirected to the main website name (in our case localhost:8000) then with the added /index 
 
-LOGOUT_REDIRECT_URL = '/login_user'
+LOGIN_URL = '/login_user'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+LOGOUT_REDIRECT_URL = '/login_user' #When logged out the user will be redirected to the login page with '/login_user' being concatinated                                                        
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-66t-&j+jn$@&qf-02j(l99c1t=vmthbjs(5ogg5*lg)khns*a('
+# Quick-start development settings - unsuitable for production                                                                                                          
+# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/                                                                         
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: keep the secret key used in production secret!                                                                          
+SECRET_KEY = 'django-insecure-66t-&j+jn$@&qf-02j(l99c1t=vmthbjs(5ogg5*lg)khns*a('                                                                   
+
+# SECURITY WARNING: don't run with debug turned on in production!                                           
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []                                                               
 
 
-# Application definition
+# Application definition. These are our installed apps in our django app
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [ 
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'example',
 ]
-
+#Middleware is the software and applications that provide serices to the program. These can be security and authentication for example
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,8 +56,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'djangotemplates.urls'
-
+ROOT_URLCONF = 'djangotemplates.urls' 
+#This controls the django templates such as swhere they are in the directory and the backend connections
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -71,21 +73,21 @@ TEMPLATES = [
         },
     },
 ]
-
+#WSGI for Django. WSGI stands for web server gateway interface and is used for calling webserver forward requests.
 WSGI_APPLICATION = 'djangotemplates.wsgi.application'
 
 
-# Database
+# Database. 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'questionsdb',
-        'USER': 'root',
-        'PASSWORD': '1515',
-        'HOST': 'localhost',
-        'PORT': '3307',
+    'default': { #Its a default database
+        'ENGINE': 'django.db.backends.mysql', #The database engine I used for my project is MySQL
+        'NAME': 'questionsdb', #The database name
+        'USER': 'root', #The database user I defined 
+        'PASSWORD': '1515', #The password for access to the database. It is a local one currently so this does not need to be encrypted as its not sent to the server 
+        'HOST': 'localhost', # Stored locally
+        'PORT': '3307', #The port 
     }
 }
 
@@ -124,13 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/' #For static URLs the URL static/ will be defined 
 
 # Add these new lines
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
+# The static file path is joined to the base diretory 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -138,12 +140,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "djangotemplates.asgi.application"
-
+#For the ASGI application and channels the backend is configured using the Redis in-memory data store. 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [("127.0.0.1", 6379)], #The loopback adresss IP and the Redis TCP host
         },
     },
 }
