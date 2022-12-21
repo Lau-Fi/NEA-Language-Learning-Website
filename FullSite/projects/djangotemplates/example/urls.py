@@ -31,8 +31,14 @@ urlpatterns = [
     path("index", views.home, name="home"),
     path("logout_user", views.logout_user, name="logout_user"),
     re_path(r"^profile/update_user$", views.update_user, name = "update_user"),
+    re_path(r"^quizhtml/quiz_results$", views.quiz_results, name = "quiz_results"),
+    re_path(r"^quiz_spanish/quiz_results$", views.quiz_results, name = "quiz_results"),
+    #Create URL that links request sent to function (stats)
 
 ]
 
 # google regex 
 # google JSON 
+
+#Forbidden (CSRF token missing.)
+#Might be just sending username not user objec in the quizhtml post request. Might need to update the views method to get the user from the username. 

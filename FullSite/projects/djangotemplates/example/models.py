@@ -24,7 +24,6 @@ class Stats(models.Model):
     wrong_answers = models.TextField(max_length=500)
     lang = models.ForeignKey(Lang, on_delete=models.CASCADE)
     difficulty = models.IntegerField() 
-    
 
 
 

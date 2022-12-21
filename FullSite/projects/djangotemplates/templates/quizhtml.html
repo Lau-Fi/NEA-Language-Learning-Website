@@ -267,9 +267,10 @@
         </div>
         <div id = "scoredisplay">
         </div>
-        <script>
+    <script>
             var Questions = {{Questions|safe}};
-            var Answers = Array(Questions.length).fill("") 
+            var Answers = Array(Questions.length).fill("")
+            
             
 // Set start
 var start = true;
@@ -361,7 +362,7 @@ submit.addEventListener("click", () => {
     let wrongquestions = "";
     for (let i=0; i<Questions.length; i++){
         if (Answers[i] == Questions[i].a){
-            score++; 
+            score++;
         } else if (Answers[i] !== Questions[i].a){
                 wrongquestions += "<div class = 'wrongquestion'>";
                 wrongquestions += Questions[i].q+' X';
@@ -369,19 +370,32 @@ submit.addEventListener("click", () => {
                 wrongquestions += "<div class = 'wronganswer'>";
                 wrongquestions += 'Correct Answer: '+Questions[i].a;
                 wrongquestions += "</div>";
-                
-
-                
         } 
         
     }              
+    
+    
     var wrongoutput = document.getElementById("wrongoutput");
     wrongoutput.innerHTML = wrongquestions
     const scoredisplay = document.getElementById('score');
     scoredisplay.innerHTML = score+ " out of "+ Answers.length;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'quiz_results');
+    xhr.setRequestHeader('Content-Type', 'application/json', true);
+    xhr.send(JSON.stringify({
+        correct_answers: score,
+        wrong_answers: Questions.length-score,
+        lang: {{Language}},
+        difficulty: 1,
+
+
+    }));
 })
 
-      </script>
+    </script>
+        </div>    
       </div>    
+        </div>    
     </body>
 </html>

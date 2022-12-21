@@ -228,7 +228,7 @@ backface-visibility: hidden;
     
 
    
-   <button type = 'button' style = 'position: absolute; top: 42%; left: 3%;'id="modelopen" >Update your profile settings</button>
+   <button type = 'button' style = 'position: absolute; top: 45%; left: 5%; height: 50px; text-align: center; width: 500px'id="modelopen" >Update your profile settings</button>
    <div id = 'formDiv'> 
     <div id = "openform">
       <form action="update_user" id = "updateform" method="POST" class="form-horizontal" style = 'display:none;'>
@@ -283,10 +283,10 @@ backface-visibility: hidden;
                 </fieldset>
             </div>
             <button type="submit" class="btn btn-primary">UPDATE</button>
-            <button id="pfp_list_open"><span class="visuallyhidden">Close</span></button>
+    <button type = "button" id="pfp_list_open"><span class="visuallyhidden">Close</span></button>
 
     </div>
-  </div>
+      </div>
         
     </form>
     <div class="form-group">
@@ -300,6 +300,9 @@ backface-visibility: hidden;
 <script>
   $(document).ready(function () {
     $('#modelopen').click(function() {
+      $('#updateform').toggle();
+    });
+    $('#pfp_list_open').click(function() {
       $('#updateform').toggle();
     });
   });

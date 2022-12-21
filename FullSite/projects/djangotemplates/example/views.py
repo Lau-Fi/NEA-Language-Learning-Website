@@ -2,39 +2,66 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView # Import TemplateView
-from .models import Question, Profile
-from django.contrib.auth.models import User, auth
+from .models import *
+from django.contrib.auth.models import *
 from django.contrib.auth.decorators import login_required
 import random 
+from django.core.exceptions import *
+from django.views.decorators.csrf import *
 
 @login_required
 def practicehtml(request):
     questions_html = []
-    for instance in Question.objects.filter(id__lte = 51):  # it's not serialization, but extracting of the useful fields
-        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
+    for instance in Question.objects.filter(lang_id = '1'):  # it's not serialization, but extracting of the useful fields
+        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})                                                     
     return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
 
 @login_required
 def practice_spanish(request):
     questions_html = []
-    for instance in Question.objects.filter(id__gt = 51):  
-        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
-    return render(request, 'practice_spanish.html', {'Questions': questions_html}) 
+    for instance in Question.objects.filter(lang_id = '2'):  
+        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
+    return render(request, 'practicehtml.html', {'Questions': questions_html}) 
 
 @login_required
 def quizhtml(request):
     questions_html = []
-    for instance in random.sample(list(Question.objects.filter(id__lte = 51)), 10):
-        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
-    return render(request, 'quizhtml.html', {'Questions': questions_html}) 
+    for instance in random.sample(list(Question.objects.filter(lang_id = 1)), 10):
+        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
+    return render(request, 'quizhtml.html', {'Questions': questions_html, 'Language': 1}) 
 
 
 @login_required
 def quiz_spanish(request):
     questions_html = []
-    for instance in random.sample(list(Question.objects.filter(id__gt = 51)),10):
-        questions_html.append({'id': instance.id, 'q': instance.Question, 'a': instance.Answer})
-    return render(request, 'quiz_spanish.html', {'Questions': questions_html}) 
+    for instance in random.sample(list(Question.objects.filter(lang_id = 2)), 10):
+        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
+    return render(request, 'quizhtml.html', {'Questions': questions_html, 'Language': 2}) 
+
+@csrf_exempt
+@login_required
+def quiz_results(request):
+    if request.method == 'POST': 
+        correct_answers = request.POST.get('correct_answers')
+        wrong_answers = request.POST.get('wrong_answers', None)
+        lang = request.POST.get('lang', None)
+        difficulty = request.POST.get('difficulty', None)
+        user = request.user
+        try:
+            stats = Stats.objects.get(user = request.user, lang = lang, difficulty = difficulty)
+            stats.correct_answers += correct_answers
+            stats.wrong_answers += wrong_answers 
+            stats.save()
+        except ObjectDoesNotExist:
+            stats = Stats( user=user, correct_answers = correct_answers, wrong_answers = wrong_answers, lang = lang, difficulty = difficulty)
+            stats.save()
+        return redirect ('home') 
+         
+        
+
+
+        
+
 
 @login_required
 def chat(request):
@@ -46,8 +73,9 @@ def room(request, room_name):
 
 @login_required
 def home(request):
-    return render (request, "index.html" ) 
-
+    stats = Stats.objects.all()
+    #return render (request, "index.html", {"homeinfo": {'correct_answers': stats.correct_answers, 'wrong_answers': stats.wrong_answers}}) 
+    return render (request, "index.html")
 
 def registration(request):
     return render (request, "registration.html" ) 
@@ -213,7 +241,5 @@ class login(TemplateView):
 
 
 
-# Required redirect - the redirect is the wrong URL ? 
-# force passwords to be more than 8 characters 
-
-#WE MAY HAVE AN ERROR IN UPDATING THE USER IF THEY PICK THE SAME USERNAME OR EMAIL AS ANOTHER USER (and maybe password?)
+# Get requests get a payload from the page - does not have a body
+# Post requests are for updating infomation - they do have a body
