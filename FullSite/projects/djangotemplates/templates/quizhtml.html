@@ -379,19 +379,11 @@ submit.addEventListener("click", () => {
     wrongoutput.innerHTML = wrongquestions
     const scoredisplay = document.getElementById('score');
     scoredisplay.innerHTML = score+ " out of "+ Answers.length;
-    
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'quiz_results');
-    xhr.setRequestHeader('Content-Type', 'application/json', true);
-    xhr.send(JSON.stringify({
-        correct_answers: score,
-        wrong_answers: Questions.length-score,
-        lang: {{Language}},
-        difficulty: 1,
-
-
-    }));
-})
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('correct_answers='+score+'&wrong_answers='+(Questions.length-score)+'&lang={{Language}}&difficulty=1');
+    })
 
     </script>
         </div>    

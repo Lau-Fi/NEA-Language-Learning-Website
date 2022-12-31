@@ -9,15 +9,15 @@ import random
 from django.core.exceptions import *
 from django.views.decorators.csrf import *
 
-@login_required
+@login_required #All login required decorators simply require the user to be logged in for these subroutines to run. This prevents the user from using the website if they are logged out 
 def practicehtml(request):
     questions_html = []
-    for instance in Question.objects.filter(lang_id = '1'):  # it's not serialization, but extracting of the useful fields
+    for instance in Question.objects.filter(lang_id = '1'):  # it's not serialization, but extracting of the useful fields. Takes all questions from the database that have the lang_id of 1 which is Japanese.
         questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})                                                     
-    return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page? Takes the questions forom the practice_questions table
+    return render(request, 'practicehtml.html', {'Questions': questions_html}) #Requests the page database to be put onto the page. Takes the questions forom the practice_questions table. Returns this data and renders the Japanese practice page
 
 @login_required
-def practice_spanish(request):
+def practice_spanish(request): #Does the same as the Japanese practice request but filters by id = 2 which is for Spanish.
     questions_html = []
     for instance in Question.objects.filter(lang_id = '2'):  
         questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
@@ -25,36 +25,36 @@ def practice_spanish(request):
 
 @login_required
 def quizhtml(request):
-    questions_html = []
-    for instance in random.sample(list(Question.objects.filter(lang_id = 1)), 10):
-        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
-    return render(request, 'quizhtml.html', {'Questions': questions_html, 'Language': 1}) 
+    questions_html = [] #Empty questions HTML array
+    for instance in random.sample(list(Question.objects.filter(lang_id = 1)), 10): #Takes 10 random sample of question objects from the Question table with the ID of 1 (Japanese)
+        questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer}) # Appends the id, question and answers from the database to the empty questions HTML array 
+    return render(request, 'quizhtml.html', {'Questions': questions_html, 'Language': 1}) #Renders the quiz html page with the Questions HTML Array that has now been filled and the language = 1  
 
 
 @login_required
-def quiz_spanish(request):
+def quiz_spanish(request): #The same as the Japanese quiz request but for Spanish (lang_id = 2)
     questions_html = []
     for instance in random.sample(list(Question.objects.filter(lang_id = 2)), 10):
         questions_html.append({'id': instance.id, 'q': instance.question, 'a': instance.answer})
     return render(request, 'quizhtml.html', {'Questions': questions_html, 'Language': 2}) 
 
-@csrf_exempt
-@login_required
-def quiz_results(request):
-    if request.method == 'POST': 
-        correct_answers = request.POST.get('correct_answers')
-        wrong_answers = request.POST.get('wrong_answers', None)
-        lang = request.POST.get('lang', None)
+@csrf_exempt #The subroutine is exempt from CSRF (cross site request forgery) validation. This is due to an error when this program is both running from my computer and I am logged in locally.
+@login_required 
+def quiz_results(request): #For getting and calculating the quiz score this subroutine is run.
+    if request.method == 'POST': #The method of request is POST as we are updating the database
+        correct_answers = request.POST['correct_answers'] 
+        wrong_answers = request.POST['wrong_answers']
+        lang = Lang.objects.get(id = request.POST['lang'])
         difficulty = request.POST.get('difficulty', None)
         user = request.user
         try:
             stats = Stats.objects.get(user = request.user, lang = lang, difficulty = difficulty)
-            stats.correct_answers += correct_answers
-            stats.wrong_answers += wrong_answers 
+            stats.correct_answers += correct_answers #The correct answers from the stats in the database will have the correct_answers variable from the website added onto it.
+            stats.wrong_answers += wrong_answers #This is the same for the wrong answers 
             stats.save()
-        except ObjectDoesNotExist:
+        except ObjectDoesNotExist: #if the object of Stats does not exist the stats variable will be saved as the Stats table and all its keys 
             stats = Stats( user=user, correct_answers = correct_answers, wrong_answers = wrong_answers, lang = lang, difficulty = difficulty)
-            stats.save()
+            stats.save() #This will be then saved 
         return redirect ('home') 
          
         
@@ -64,30 +64,30 @@ def quiz_results(request):
 
 
 @login_required
-def chat(request):
+def chat(request): #Requests and returns the html page
     return render(request, "chat.html")
 
 @login_required
-def room(request, room_name):
-    return render(request, "chatrooms/room.html", {"room_name": room_name})
+def room(request, room_name): #Requests asnd returns the chatroom page. However, the URL defined can be changed easily. In our case the chatrooms appened onto the URL is the Japanese or Spanish room. 
+    return render(request, "chatrooms/room.html", {"room_name": room_name}) #They both share the same render request through using the colon identity key
 
 @login_required
 def home(request):
-    stats = Stats.objects.all()
-    #return render (request, "index.html", {"homeinfo": {'correct_answers': stats.correct_answers, 'wrong_answers': stats.wrong_answers}}) 
-    return render (request, "index.html")
+    stats = Stats.objects.get(user = request.user)
+    return render (request, "index.html", {"homeinfo": {'correct_answers': stats.correct_answers, 'wrong_answers': stats.wrong_answers}}) 
+
 
 def registration(request):
     return render (request, "registration.html" ) 
 
 @login_required
 def profile(request):
-    profile = Profile.objects.get(user = request.user)
-    return render (request, "profile.html", {"userinfo": {'bio': profile.bio, 'picture': profile.picture}}) 
+    profile = Profile.objects.get(user = request.user) #When returning the profile request we get all the objects from the database Profile table. 
+    return render (request, "profile.html", {"userinfo": {'bio': profile.bio, 'picture': profile.picture}}) #When rendering the profile html page we use a JSON dictionary to set the profile keys to variables to use within the Django code.  
 
-def register(request):
-    if request.method == 'POST':
-        first_name = request.POST['first_name']
+def register(request): #When the registering page is loaded we need to run this subroutine to update the database with the user's information
+    if request.method == 'POST': #Due to updating/adding new information we use a POST request method
+        first_name = request.POST['first_name'] #All of these are stored as variables to use while registering and to store for logging in.
         last_name = request.POST['last_name']
         username = request.POST['username']
         email = request.POST['email']
@@ -96,55 +96,55 @@ def register(request):
         bio = request.POST['bio']
         picture = request.POST['picture']
         
-        if password==confirm_password:
+        if password==confirm_password: #For verification that the user has to enter their password twice in password and confirm_password
             if User.objects.filter(username=username).exists():
-                messages.info(request, 'Username is already taken')
+                messages.info(request, 'Username is already taken') #If the username already exists the user will be notified taht it is already taken. This is to prevent login errors.
                 return redirect(register)
-            elif User.objects.filter(email=email).exists():
+            elif User.objects.filter(email=email).exists(): #The same exisits for the email
                 messages.info(request, 'Email is already taken')
-                return redirect(register)
+                return redirect(register) #The user will remain on the register page (get redirected back to it) so they can keep on logging in without any errors
             else:
-                user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
-                user.save()
+                user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name) #The .create_user in built django class will be used to create the user. For the fields will be saved into variables.
+                user.save() #The whole user account is saved.
                 
-                profile = Profile(bio=bio, picture=picture, user=user)
+                profile = Profile(bio=bio, picture=picture, user=user) #For parts of the profile the profile is also defined and saved.
                 profile.save()
                 
-                return redirect('login_user')
+                return redirect('login_user') #Once registewred the user will instantly be redirected to login to the webite
 
 
         else:
-            messages.info(request, 'Both passwords are not matching')
-            return redirect(register)
+            messages.info(request, 'Both passwords are not matching') #If the verification fails the user will be told that both their passwords are not matching
+            return redirect(register) #They will then stay on the register page
             
 
     else:
-        return render(request, 'registration.html')
+        return render(request, 'registration.html') #Anything else that happens will keep the user on the registration page to avoid errors. 
 
 
 
 
-def login_user(request):
-    if request.method == 'POST':
+def login_user(request): #The user login subroutine is run for when the user logs in
+    if request.method == 'POST': #We just need the username and password from the database. Why do we need a post if we are not updating information???
         username = request.POST['username']
         password = request.POST['password']
 
-        user = auth.authenticate(username=username, password = password)
+        user = auth.authenticate(username=username, password = password) #The auth.authenticate is built in with django to authenticate whether what the user has entered matches with the registered information. It will check the stored database 
 
-        if user is not None:
-            auth.login(request, user)
-            return redirect('/index')
+        if user is not None: #The authenticate will return something that is not None so this if statement will run if the user is authenticated and what they entered is valid.
+            auth.login(request, user) #An authenticated login bringing the request and the whole user profile 
+            return redirect('/index') #Will be returned and redirected with this authenticated profile into the home page (index). 
         else:
-            messages.info(request, 'Invalid Username or Password')
-            return redirect('login_user')
+            messages.info(request, 'Invalid Username or Password') #If the user fails the else selection will trigger displaying to the user that either their username or password is invalid.
+            return redirect('login_user') #Will keep them on the login user page
     
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html') #Anything else that occurs will render the login html page again
 
 @login_required
-def update_user(request):
+def update_user(request): #For updating the user on their profile we use a post request method.
     if request.method == 'POST':
-        userprofile = Profile.objects.get(user = request.user)
+        userprofile = Profile.objects.get(user = request.user) #These will be POST.get however due to all of these already existing in the database having been selected when registering.
         user = request.user
         first_name = request.POST.get('first_name',None)
         last_name = request.POST.get('last_name',None) 
@@ -155,7 +155,7 @@ def update_user(request):
         bio = request.POST.get('bio',None) 
         picture = request.POST.get('picture',None)
         
-
+        #When the data is loaded into the update form the user can edit the fields and enter new data. Any blank spaces are not allowed using the .strip() inbuilt function. If there is none in the field a message will be displayed asking the user to put valid text in their profile update
         if bio is not None:
             userprofile.bio = bio 
         if picture is not None:
@@ -184,7 +184,7 @@ def update_user(request):
             else:
                 messages.info(request, 'Please enter an email')
                 return redirect(update_user)
-        if password is not None or confirm_password is not None:
+        if password is not None or confirm_password is not None: #The passwords both are seperate fields for their update but are still set and saved as just password
             if password and confirm_password and password.strip() and confirm_password.strip():
                 if password==confirm_password:
                     user.set_password(password) 
@@ -192,20 +192,20 @@ def update_user(request):
                     messages.info(request, 'Passwords do not match')
                     return redirect(update_user)
 
-
+        #Saves both user and userprofile at the end of the subroutine
         user.save()
         userprofile.save()
         auth.login(request, user)
-        return redirect(profile)
+        return redirect(profile) #Keeps them on the profile page where they can update their profile
     else:
-        return render(request, 'profile.html')
+        return render(request, 'profile.html') 
        
 
-def logout_user(request):
+def logout_user(request): #Logging out the user uses the auth.logout function and returns the user back to the sign in page of login_user
     auth.logout(request)
     return redirect('login_user')
 
-# Add the two views we have been talking about  all this time :)
+# Here we add the class views for some static pages with little django python code on them.
 class HomePageView(TemplateView):
     template_name = "login.html"
 
