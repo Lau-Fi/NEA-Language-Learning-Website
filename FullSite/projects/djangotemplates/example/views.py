@@ -49,8 +49,8 @@ def quiz_results(request): #For getting and calculating the quiz score this subr
         user = request.user
         try:
             stats = Stats.objects.get(user = request.user, lang = lang, difficulty = difficulty)
-            stats.correct_answers += correct_answers #The correct answers from the stats in the database will have the correct_answers variable from the website added onto it.
-            stats.wrong_answers += wrong_answers #This is the same for the wrong answers 
+            stats.correct_answers += int(correct_answers) #The correct answers from the stats in the database will have the correct_answers variable from the website added onto it.
+            stats.wrong_answers += int(wrong_answers) #This is the same for the wrong answers 
             stats.save()
         except ObjectDoesNotExist: #if the object of Stats does not exist the stats variable will be saved as the Stats table and all its keys 
             stats = Stats( user=user, correct_answers = correct_answers, wrong_answers = wrong_answers, lang = lang, difficulty = difficulty)
@@ -73,8 +73,11 @@ def room(request, room_name): #Requests asnd returns the chatroom page. However,
 
 @login_required
 def home(request):
-    stats = Stats.objects.get(user = request.user)
-    return render (request, "index.html", {"homeinfo": {'correct_answers': stats.correct_answers, 'wrong_answers': stats.wrong_answers}}) 
+    try:
+        stats = Stats.objects.get(user = request.user)
+        return render (request, "index.html", {"homeinfo": {'correct_answers': stats.correct_answers, 'wrong_answers': stats.wrong_answers}})
+    except Stats.DoesNotExist:
+        return render (request, 'index.html')
 
 
 def registration(request):
