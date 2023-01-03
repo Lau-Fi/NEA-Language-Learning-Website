@@ -19,9 +19,9 @@ class Profile(models.Model):
     picture = models.TextField(max_length=500)
 
 class Stats(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     correct_answers = models.TextField(max_length=500)
-    wrong_answers = models.TextField(max_length=500)
+    wrong_answers = models.TextField(max_length=500) 
     lang = models.ForeignKey(Lang, on_delete=models.CASCADE)
     difficulty = models.IntegerField() 
 
