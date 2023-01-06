@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import random 
 from django.core.exceptions import *
 from django.views.decorators.csrf import *
+import numpy as np
 
 @login_required #All login required decorators simply require the user to be logged in for these subroutines to run. This prevents the user from using the website if they are logged out 
 def practicehtml(request):
@@ -50,17 +51,14 @@ def quiz_results(request): #For getting and calculating the quiz score this subr
         try:
             stats = Stats.objects.get(user = request.user, lang = lang, difficulty = difficulty) 
             stats.correct_answers = int(stats.correct_answers) + int(correct_answers) #The correct answers from the stats in the database will have the correct_answers variable from the website added onto it.
-            stats.wrong_answers = int(wrong_answers) + int(wrong_answers) #This is the same for the wrong answers 
+            stats.wrong_answers = int(stats.wrong_answers) + int(wrong_answers) #This is the same for the wrong answers 
             stats.save()
         except ObjectDoesNotExist: #if the object of Stats does not exist the stats variable will be saved as the Stats table and all its keys 
             stats = Stats( user=user, correct_answers = correct_answers, wrong_answers = wrong_answers, lang = lang, difficulty = difficulty)
             stats.save() #This will be then saved 
-        return redirect ('home') 
+        return redirect ('scores') 
          
-        
 
-
-        
 
 
 @login_required
@@ -73,16 +71,18 @@ def room(request, room_name): #Requests asnd returns the chatroom page. However,
 
 @login_required
 def home(request):
-    try:
-        correct_answers = 0
-        wrong_answers = 0
-        for stat in Stats.objects.filter(user = request.user):
-            correct_answers += int(stat.correct_answers)
-            wrong_answers += int(stat.wrong_answers)
-        return render (request, "index.html", {"homeinfo": {'correct_answers': correct_answers, 'wrong_answers': wrong_answers}})
-    except Stats.DoesNotExist:
-        return render (request, 'index.html')
-
+    users = []
+    leaderboard_scores = {}
+    for position in Stats.objects.all():
+        user_id = position.user
+        correct_answers = position.correct_answers
+        if user_id in leaderboard_scores:
+            leaderboard_scores[user_id] = int(correct_answers) + int(leaderboard_scores[user_id])
+        else:
+            leaderboard_scores[user_id] = int(correct_answers)
+    for user in sorted(leaderboard_scores, key=leaderboard_scores.get, reverse=True):
+        users.append([user, leaderboard_scores[user]])    
+    return render(request, 'index.html', {'homeboard': users[:10]})
 
 def registration(request):
     return render (request, "registration.html" ) 
@@ -128,8 +128,17 @@ def register(request): #When the registering page is loaded we need to run this 
     else:
         return render(request, 'registration.html') #Anything else that happens will keep the user on the registration page to avoid errors. 
 
-
-
+@login_required
+def scores(request):
+     try:
+        correct_answers = 0
+        wrong_answers = 0
+        for stat in Stats.objects.filter(user = request.user):
+            correct_answers += int(stat.correct_answers)
+            wrong_answers += int(stat.wrong_answers)
+        return render (request, "scores.html", {"homeinfo": {'correct_answers': correct_answers, 'wrong_answers': wrong_answers}})
+     except Stats.DoesNotExist:
+        return render (request, 'scores.html')
 
 def login_user(request): #The user login subroutine is run for when the user logs in
     if request.method == 'POST': #We just need the username and password from the database. Why do we need a post if we are not updating information???

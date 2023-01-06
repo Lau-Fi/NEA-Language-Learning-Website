@@ -131,7 +131,7 @@
       </div>
    </div>  
    <div id = "chattitle">
-    <a> Chatroom: Japanese </a> 
+    <a> Chatroom: Japanese </a> <!-- Here are the titles for the 2 chatrooms as an <a> tag which defines a hyperlink to another page. In our case the 2 buttons for the chatrooms. -->
    </div>
    <div id = "chattitleother">
     <a> Chatroom: Spanish </a> 
@@ -140,39 +140,39 @@
    <textarea disabled id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
+    {{ room_name|json_script:"room-name" }} <!-- Here we have the room name with a JSON script with it encapsulated in Django double braces form -->
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const roomName = JSON.parse(document.getElementById('room-name').textContent); //a JSON text with the element id 'room-name' is assigned the constant roomName. This is for getting the element ID for the room name and creating a websocket connection with its name as part of the URL.  
 
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
+        const chatSocket = new WebSocket( //The new websocket connection as a chatsocket is defined here. 
+            'ws://' //Start of URL
+            + window.location.host //This will occur within the website page
             + '/ws/chat/'
-            + roomName
+            + roomName //The room name. It will depend on the button ID clicked by the user. Either Japanese chatroom or Spanish chatroom.
             + '/'
         );
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += ("{{request.user.username}}" + ': ' + data.message + '\n');
+        chatSocket.onmessage = function(e) { //this function is used to display the message on the chatroom 
+            const data = JSON.parse(e.data); //parses the json data to the constant data
+            document.querySelector('#chat-log').value += ("{{request.user.username}}" + ': ' + data.message + '\n'); //within the webpage and in the chatbox, the message and the username that sent it is sent
             if (data.message == null){
-              alert ("Please enter a message to chat")
+              alert ("Please enter a message to chat") //if the data is null when entered the user will have the message displaeyed asking them to enter a message to chat 
               return false;
             }
         };
 
-        chatSocket.onclose = function(e) {
+        chatSocket.onclose = function(e) { //if the  chat scocket closes unexpectedly then an error will tell the user what has happened 
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
+        document.querySelector('#chat-message-input').focus(); //for inputting the message the input on the html document has the focus object property 
+        document.querySelector('#chat-message-input').onkeyup = function(e) { //the chat message input on enter will also submit the text the user has entered. This saves them from having to click submit 
             if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
+                document.querySelector('#chat-message-submit').click(); //clicking the chat message submit button also submits the text 
             }
         };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
+        document.querySelector('#chat-message-submit').onclick = function(e) { //this function turn what the user inputted into a string so it can be displayed and manipulated through the web socketing with a JSON stirng. 
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             if (messageInputDom.value != " ") {
@@ -183,12 +183,6 @@
 
         };
         
-        //if (window.location.pathname = '/chatrooms/JapanChatroom/') {
-          //document.getElementById('chattitle').style.display = "block";
-        //} 
-        //else {
-          //document.getElementById('chattitleother').style.display = "block";
-        //}
     
       </script>
 

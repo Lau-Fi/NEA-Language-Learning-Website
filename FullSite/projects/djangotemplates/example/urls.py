@@ -15,7 +15,7 @@ urlpatterns = [
     re_path(r'^chat/$', views.chat, name = 'chat'),
     re_path(r'^play/$', views.PlayPageView.as_view(), name = 'play'),
     re_path(r'^profile/$', views.profile, name = 'profile'),
-    re_path(r'^scores/$', views.ScoresPageView.as_view(), name = 'scores'),
+    path('scores', views.scores, name = 'scores'),
     re_path(r'^settings/$', views.SettingsPageView.as_view(), name = 'settings'),
     re_path(r'^practice_languages/$', views.Practice_languagesPageView.as_view(), name = 'practicelang'),
     re_path(r'^practicehtml/$', views.practicehtml, name = 'practicehtml'),
@@ -33,8 +33,6 @@ urlpatterns = [
     re_path(r"^profile/update_user$", views.update_user, name = "update_user"),
     re_path(r"^quizhtml/quiz_results$", views.quiz_results, name = "quiz_results"),
     re_path(r"^quiz_spanish/quiz_results$", views.quiz_results, name = "quiz_results"),
-    #Create URL that links request sent to function (stats)
-
 ]
 
 # google regex 
