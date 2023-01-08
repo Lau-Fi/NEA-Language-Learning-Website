@@ -81,7 +81,7 @@ def home(request):
         else:
             leaderboard_scores[user_id] = int(correct_answers)
     for user in sorted(leaderboard_scores, key=leaderboard_scores.get, reverse=True):
-        users.append([user, leaderboard_scores[user]])    
+        users.append([user, ':', leaderboard_scores[user]])    
     return render(request, 'index.html', {'homeboard': users[:10]})
 
 def registration(request):

@@ -40,9 +40,9 @@
         }
         #hitext {
           position: absolute;
-          top: 15%;
+          top: 10%;
           left: 80%;
-          margin-top: -50px;
+          margin-top: -32px;
           margin-left: -75px;
           width: 200px;
           height: 100px;
@@ -65,17 +65,14 @@
           width: 100px;
           height: 100px;
         }
-        #piechart {
+        #leaderboard {
           position: absolute;
           top: 15%;
           left: 80%;
           margin-top: 480px;
-          margin-left: -1300px;
-          width: 1500px;
+          margin-left: -125px;
+          width: 840px;
           height: 575px;
-        }
-        #leaderboard {
-          width: 1500px;
         }
       </style>
   
@@ -126,16 +123,16 @@
           </p>
         </center>
       <div id="hitext">
-        <a class="text" >Hi, {{user.first_name}}</a>
+        <a class="text" >Hi, {{user.first_name}}</a> <!-- A greeting to the user. This tells them they are logged in at a glance. -->
       </div>
-      <div id="leaderboard">
+      <div id="leaderboard" style = "border: 1px solid lightgray; left: -50%;">
         {% block content %}
-          <h1>Leaderboard</h1>
-          {% if homeboard %}
+          <h1>Leaderboard</h1> 
+          {% if homeboard %} <!-- if homeboard exists - boolean -->
           <ol>
-            {% for entry in homeboard %}
+            {% for entry in homeboard %} <!-- for every entry in homeboard -->
               <li>
-                <p> {% for item in entry %} {{item}} {% endfor %} </p>
+                <p> {% for item in entry %} {{item}} {% endfor %} </p> <!-- and every item in entry - this will get all the items both name and score that is on the leaderboard. -->
               </li>
             {% endfor %}
           </ul>

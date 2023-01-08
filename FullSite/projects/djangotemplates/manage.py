@@ -25,4 +25,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Look for tutorial to display one item and automatgically move onto the next one witout refreshing the page. 
+#This page is what runs the whole website from. It sets up the django environment and using name = main convention to run the program. This is important so we can run the program off one specific place which helps in debugging.

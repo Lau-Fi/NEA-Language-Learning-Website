@@ -322,7 +322,7 @@ const back = document.getElementById('back');
 const next = document.getElementById('next');
 const submit = document.getElementById('submit');
 var id = 0;
-//add some randomness here  
+//adding some randomness here  
 next.addEventListener("click", () => {
     if (id <Questions.length-1){
         const textinput = document.getElementById('textinput');
@@ -339,7 +339,7 @@ next.addEventListener("click", () => {
     }
 })
 
-
+// The event listener selection when the button is clicked - textinput the the answer
 back.addEventListener("click", () => {
     if (id >0){
         const textinput = document.getElementById('textinput');
@@ -354,35 +354,35 @@ back.addEventListener("click", () => {
     }
 })
 
-
+//This event listerner occurs once the user clicks the submit button at the end of the quiz/
 submit.addEventListener("click", () => {
-    quizop.style.display="none";
-    results.style.display="block";
-    let score = 0;
-    let wrongquestions = "";
-    for (let i=0; i<Questions.length; i++){
-        if (Answers[i] == Questions[i].a){
-            score++;
-        } else if (Answers[i] !== Questions[i].a){
-                wrongquestions += "<div class = 'wrongquestion'>";
-                wrongquestions += Questions[i].q+' X';
-                wrongquestions += "</div>";
-                wrongquestions += "<div class = 'wronganswer'>";
-                wrongquestions += 'Correct Answer: '+Questions[i].a;
-                wrongquestions += "</div>";
+    quizop.style.display="none"; //The quiz question box is hidden
+    results.style.display="block"; //The results list is shown
+    let score = 0; //at the start score is 0
+    let wrongquestions = ""; //The wrong questions displayed equals none 
+    for (let i=0; i<Questions.length; i++){ //a Javascript for loop. i = 0 and for every question < the amount of questions, increment i by 1 
+        if (Answers[i] == Questions[i].a){ 
+            score++; // if the answer the user entered is the same as the question answer the score is incremented by 1 
+        } else if (Answers[i] !== Questions[i].a){ //else if the user's answer does not equal the question's correct answer
+                wrongquestions += "<div class = 'wrongquestion'>"; //The HTML div class is added to wrongquestion
+                wrongquestions += Questions[i].q+' X'; //The question is given an X indicating it being wrong. 
+                wrongquestions += "</div>"; //creates another div. We are creating HTML in Javascript to display the answers that were incorrect and their correct answer
+                wrongquestions += "<div class = 'wronganswer'>"; //We open a new div
+                wrongquestions += 'Correct Answer: '+Questions[i].a;  //The correct answer is the questions answer
+                wrongquestions += "</div>"; //Finally close the div 
         } 
         
     }              
     
-    
-    var wrongoutput = document.getElementById("wrongoutput");
+    //In order to record the quiz score for the leaderboard and score page we have to use an XML HTTP Request. We also show the score on the final results when the user completes the quiz.
+    var wrongoutput = document.getElementById("wrongoutput"); 
     wrongoutput.innerHTML = wrongquestions
     const scoredisplay = document.getElementById('score');
-    scoredisplay.innerHTML = score+ " out of "+ Answers.length;
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'quiz_results');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('correct_answers='+score+'&wrong_answers='+(Questions.length-score)+'&lang={{Language}}&difficulty=1');
+    scoredisplay.innerHTML = score+ " out of "+ Answers.length; //The score is shown on the HTML. It adds together the variable of score, the string "out of" and the item taken from the database with the .length object 
+    var xhr = new XMLHttpRequest(); //creates a new XML HTTP Request. This is a built in browser object that is used to request data from a webserver or for my case locally from the files. 
+    xhr.open("POST", 'quiz_results'); //a POST request for quiz_results in views
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); //The request header is set. This is in the application and its content type is the standard x-www-form URL 
+    xhr.send('correct_answers='+score+'&wrong_answers='+(Questions.length-score)+'&lang={{Language}}&difficulty=1'); //Finally, the correct answers wtih score and wrong answers equals the amount of questions with score subtracted from it. The Language and difficulty is also passed into it as well due to them being part of the user stats. 
     })
 
     </script>

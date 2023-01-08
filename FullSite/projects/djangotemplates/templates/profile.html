@@ -127,14 +127,14 @@ backface-visibility: hidden;
   top: 1%;
   left: 45%;
   margin-top: 50px;
-  margin-left: -1164px;
+  margin-left: -1155px;
   width: 25px;
   height: 115px;
 }
 #profilelayout{
  position: absolute;
   top: 7%;
-  left: 7%;
+  left: 8%;
 }   
 #modelopen {
   position: absolute;
@@ -142,7 +142,7 @@ backface-visibility: hidden;
   left: 50%;
   margin-top: -50px;
   margin-left: -250px;
-  width: 500px;
+  width: 250px;
   height: 150px;
   z-index: -1;
 }
@@ -151,7 +151,7 @@ backface-visibility: hidden;
   top: 8%;
   left: 45.75%;
   margin-top: 50px;
-  margin-left: -1164px;
+  margin-left: -1140px;
   width: 25px;
   height: 115px;
   color: white;
@@ -162,7 +162,11 @@ backface-visibility: hidden;
   border: 1px solid white;
   word-wrap: break-word;
   overflow-x: scroll;
-  }
+}
+#formDiv{
+  top: 200%;
+}
+
   </style>
   
   <div id="wrapper">
@@ -298,7 +302,7 @@ backface-visibility: hidden;
     </div>
 
 <script>
-  $(document).ready(function () {
+  $(document).ready(function () { // This simply toggles on and off the update form 
     $('#modelopen').click(function() {
       $('#updateform').toggle();
     });
